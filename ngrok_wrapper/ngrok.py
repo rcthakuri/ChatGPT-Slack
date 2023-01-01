@@ -6,14 +6,15 @@ from pyngrok.exception import PyngrokNgrokURLError, PyngrokNgrokURLError
 
 
 class TunnelNg:
-    def __init__(self, auth_token, port, request_type):
-        self.port = port 
-        self.auth_token = auth_token
-        self.request_type = request_type
+    def __init__(self,  ngrok_key, callback_on_tunnel_change):
+        self.port = ngrok_key['PORT']
+        self.auth_token = ngrok_key['AUTH_TOKEN']
+        self.request_type = ngrok_key['REQUEST_TYPE']
         ngrok.set_auth_token(self.auth_token)
         self.default_tunnel = None
         self.tunnel_runner = None
         self.tunnel_process_runner = None
+        self.callback_on_tunnel_change = callback_on_tunnel_change
         self.start_tunnel()
 
     def __del__(self):
@@ -31,7 +32,7 @@ class TunnelNg:
         self.default_tunnel =  self.select_https_url(self.get_public_urls(ngrok.get_tunnels))
         logging.warning('Default tunnel updated: %s', self.default_tunnel) # TODO: Custom logging w/ color 
         self.tunnel_runner.start()
-
+        self.callback_on_tunnel_change(self.default_tunnel)
 
     def stop_tunnel(self):
         ngrok.kill()
