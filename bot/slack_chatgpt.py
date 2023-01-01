@@ -1,37 +1,18 @@
 import os
-import threading
 from slack_bolt import App
 from slack_sdk import WebClient
 from chatgpt_wrapper import chatgpt
-
-
-class AppRunner(threading.Thread):
-    def __init__(self, target):
-        super().__init__()
-        self.target = target
-        self._stop = threading.Event()
-
-    def run(self):
-        self.target()
-        while True:
-            if self.stopped():
-                return
-
-    def stop(self):
-        self._stop.set()
-
-    def stopped(self):
-        return self._stop.isSet()
+from utility.custom_thread import CustomThread
 
 
 class SlackChatGPTBolt:
     def __init__(self, slack_key, chatgpt_key):
         self.replier = chatgpt.ChatGPT(chatgpt_key['OPENAI_MODEL_ENGINE'], chatgpt_key['OPENAI_API_KEY'])
         self.app = self.setup_app(slack_key['BOT_TOKEN'], slack_key['SIGNING_SECRET'])
-        self.app_runner = AppRunner(self.app.start(port=int(slack_key['PORT'])))
+        self.app_runner = CustomThread(self.app.start(port=int(slack_key['PORT'])))
 
     def __del__(self):
-        self.app_runner.stop()
+        hasattr(self, 'app_runner') and self.app_runner.stop()
         exit(-1)
 
     def setup_app(self, bot_token, signing_secret):
