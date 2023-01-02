@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from ngrok_wrapper.ngrok import TunnelNg
-from automation_model.automation.automate_slack_event_subscription import SlackUrlUpdater
+from automation.automate.automate_slack_event_subscription import SlackUrlUpdater
 
 
 load_dotenv()
