@@ -3,3 +3,4 @@ pyngrok==5.2.1
 selenium==4.7.2
 slack_bolt==1.16.1
 python-dotenv==0.21.0
+webdriver_manager==3.8.5
