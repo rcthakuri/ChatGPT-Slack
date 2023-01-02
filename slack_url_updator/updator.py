@@ -37,18 +37,21 @@ class SlackUrlUdater:
         }
         self.chrome_options.add_argument('start-maximized')
         self.chrome_options.add_experimental_option('detach', True)
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(),**self.web_driver_params)
-        self.driver.get(self.url)
+        self.driver = self.get_driver()
+
+    def get_driver(self):
+        return webdriver.Chrome(ChromeDriverManager().install(),**self.web_driver_params)
 
     def login_credentials(self):
         self.driver.find_element(By.XPATH,"//input[@id='email']").send_keys(self.username)
         self.driver.find_element(By.XPATH,"//input[@id='password']").send_keys(self.password)
         self.driver.find_element(By.XPATH,"//button[normalize-space()='Sign In']").click()
-        time.sleep(3)
+        time.sleep(10)
     
     def event_subscription(self):
+        self.driver.switch_to.window(self.driver.window_handles[1])
         self.driver.get(SUBSCRIPTIONS_URL)
-        self.driver.find_element(By.XPATH,"//div[@class='ts_toggle_button']").click()
+        # self.driver.find_element(By.XPATH,"//div[@class='ts_toggle_button']").click()
 
     def request_url_in_event_subscription(self, req_url):
         time.sleep(10)
@@ -58,9 +61,15 @@ class SlackUrlUdater:
         self.driver.find_element(By.XPATH,"//button[@data-qa='save_changes_button']").click()
 
     def update_request_url(self, req_url):
+        self.driver = self.get_driver()
+        self.driver.get(self.url)
+        self.driver.execute_script("window.open('');")
+        time.sleep(10)
         self.login_credentials()
         self.event_subscription()
-        self.request_url_in_event_subscription(req_url + self.req_url_suffix)    
+        self.request_url_in_event_subscription(req_url + self.req_url_suffix)
+        self.driver.quit()
+
 
 def updator():
     slack_cred = {
@@ -76,7 +85,7 @@ def updator():
 
     slack_url_updator = SlackUrlUdater(slack_cred)
 
-    TunnelNg(ngrok_key,slack_url_updator.update_request_url)
+    TunnelNg(ngrok_key, slack_url_updator.update_request_url).poll_tunnels()
 
     
 if __name__ == "__main__":
