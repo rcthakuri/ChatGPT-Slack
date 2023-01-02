@@ -1,4 +1,4 @@
 openai==0.25.0
+pyngrok==5.2.1
 slack_bolt==1.16.1
 python-dotenv==0.21.0
-
