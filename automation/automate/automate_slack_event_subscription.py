@@ -14,8 +14,7 @@ from automation.automation_model.selector.slack_selector import SlackSelector
 # Other system lib import
 import os
 import warnings
-from time import sleep
-from typing import List, Any
+from typing import Any
 
 # CONSTANT
 GOOGLE_CHROME_PROFILE_DIR = ''
@@ -86,9 +85,8 @@ class SlackUrlUpdater(CustomSelenium):
         self.username = slack_cred['USERNAME']
         self.password = slack_cred['PASSWORD']
         self.req_url_suffix = '/slack/events'
-        self.url = self.slack_update_selector.get_login_url()
         self.slack_update_selector = SlackSelector().event_subscription_selector
-
+        self.url = self.slack_update_selector.get_login_url()
 
     def login_to_slack(self):
         self.wait_until_element_presence(
