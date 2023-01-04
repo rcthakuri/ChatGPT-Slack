@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from bot import slack_chatgpt
+from lib.bot import slack_chatgpt
 
 load_dotenv()
 
