@@ -1,5 +1,5 @@
 import json
-from utility.http_client import HttpClient
+from chatgpt_slack_lib.utility.http_client import HttpClient
 
 
 class SlackAppManifest:

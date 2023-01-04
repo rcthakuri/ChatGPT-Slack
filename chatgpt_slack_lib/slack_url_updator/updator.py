@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
-from ngrok_wrapper.ngrok import TunnelNg
-from bot.app_manifest.manifest import SlackAppManifest
+from chatgpt_slack_lib.ngrok_wrapper.ngrok import TunnelNg
+from chatgpt_slack_lib.bot.app_manifest.manifest import SlackAppManifest
 
 load_dotenv()
 
@@ -41,7 +41,3 @@ def updator():
 
     app_manifest = SlackAppManifest(slack_manifest_key)
     TunnelNg(ngrok_key, app_manifest.update_request_url).poll_tunnels()
-
-
-if __name__ == "__main__":
-    updator()

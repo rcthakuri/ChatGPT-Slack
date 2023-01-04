@@ -1,8 +1,8 @@
 import os
 from slack_bolt import App
 from slack_sdk import WebClient
-from chatgpt_wrapper import chatgpt
-from utility.custom_thread import CustomThread
+from chatgpt_slack_lib.chatgpt_wrapper import chatgpt
+from chatgpt_slack_lib.utility.custom_thread import CustomThread
 
 
 class SlackChatGPTBolt:

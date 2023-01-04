@@ -1,4 +1,4 @@
-# Selenium import and related lib
+# Selenium import and related chatgpt_slack_lib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as ec
 # Selector module
 from automation.automation_model.selector.slack_selector import SlackSelector
 
-# Other system lib import
+# Other system chatgpt_slack_lib import
 import os
 import warnings
 from typing import Any

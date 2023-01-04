@@ -1,6 +1,6 @@
 import logging
 from pyngrok import ngrok
-from utility.custom_thread import CustomThread
+from chatgpt_slack_lib.utility.custom_thread import CustomThread
 
 
 class TunnelNg:
