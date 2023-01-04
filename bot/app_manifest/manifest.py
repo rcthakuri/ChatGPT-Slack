@@ -18,7 +18,6 @@ class SlackAppManifest:
         })
         response = self.slack_api_connection.post(self.slack_manifest_export_api, payload, self.headers)
         data = response.read()
-        print(data)
         manifest = json.loads(data.decode("utf-8"))["manifest"]
         return manifest
 
@@ -31,10 +30,8 @@ class SlackAppManifest:
         return response.read()
 
     def update_request_url(self, req_url):
-        import time
-        time.sleep(10)
         self.current_app_manifest['settings']['event_subscriptions']['request_url'] = req_url + '/slack/events'
-        print(self.set_app_manifest(self.current_app_manifest))
+        self.set_app_manifest(self.current_app_manifest)
 
     @staticmethod
     def get_headers(bearer_token, content_type):
