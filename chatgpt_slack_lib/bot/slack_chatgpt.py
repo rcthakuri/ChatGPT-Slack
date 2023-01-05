@@ -13,11 +13,7 @@ class SlackChatGPTBolt(SlackAuth, ChatGPTAuth):
         ChatGPTAuth.__init__(self)
         self.replier = chatgpt.ChatGPT(self._chatgpt_model_engine, self._chatgpt_api_key)
         self.app = self.setup_app(self._slack_app_token, self._slack_signing_secret)
-        self.app_runner = CustomThread(self.app_starter)
-        self.init_app()
-
-    def app_starter(self):
-        self.app.start(port=self._slack_port)
+        self.app.start()
 
     def setup_app(self, bot_token, signing_secret):
         if bot_token and signing_secret:
@@ -40,14 +36,3 @@ class SlackChatGPTBolt(SlackAuth, ChatGPTAuth):
         else:
             print('Unable to init app!')
             exit(-1)
-
-    def app_cleanup(self):
-        hasattr(self, 'app_runner') and \
-            hasattr(self.app_runner, 'stop') and \
-            self.app_runner.stop()
-        hasattr(self, 'slack_config_token_poll_runner') and \
-            hasattr(self.slack_config_token_poll_runner, 'stop') and \
-            self.slack_config_token_poll_runner.stop()
-
-    def init_app(self):
-        self.app_runner.start()
