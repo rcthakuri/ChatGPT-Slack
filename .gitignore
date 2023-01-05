@@ -156,3 +156,4 @@ cython_debug/
 
 # Store
 store.pickle
+secret_vault/
