@@ -1,5 +1,3 @@
-import os
-import atexit
 from sys import exit
 from slack_bolt import App
 from slack_sdk import WebClient
@@ -16,7 +14,6 @@ class SlackChatGPTBolt(SlackAuth, ChatGPTAuth):
         self.replier = chatgpt.ChatGPT(self._chatgpt_model_engine, self._chatgpt_api_key)
         self.app = self.setup_app(self._slack_app_token, self._slack_signing_secret)
         self.app_runner = CustomThread(self.app_starter)
-        self.slack_config_token_poll_runner = CustomThread(self.poll_slack_config_token)
         self.init_app()
 
     def app_starter(self):
@@ -43,13 +40,6 @@ class SlackChatGPTBolt(SlackAuth, ChatGPTAuth):
         else:
             print('Unable to init app!')
             exit(-1)
-
-    def poll_slack_config_token(self):
-        while True:
-            try:
-                self.check_config_token_validity()
-            except KeyboardInterrupt:
-                break
 
     def app_cleanup(self):
         hasattr(self, 'app_runner') and \

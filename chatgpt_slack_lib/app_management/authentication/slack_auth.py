@@ -25,14 +25,18 @@ class SlackAuth:
         self._slack_port = int(SLACK_PORT)
         self._slack_username = SLACK_USERNAME
         self._slack_password = SLACK_PASSWORD
-        self._slack_app_token = SLACK_APP_TOKEN
+
+        self._slack_config_token = None
         self._slack_config_token_expiry_time = None
         self._slack_config_token_created_time = None
-        self._slack_signing_secret = SLACK_SIGNING_SECRET
-        self._config_refresh_token = SLACK_CONFIG_REFRESH_TOKEN
-        self._slack_config_refresh_token = SLACK_CONFIG_REFRESH_TOKEN
         self.fetch_config_tokens_when_time_is_lt = 5  # hours
+        self._slack_config_refresh_token = SLACK_CONFIG_REFRESH_TOKEN
+
+        self._slack_app_token = SLACK_APP_TOKEN
+        self._slack_signing_secret = SLACK_SIGNING_SECRET
+
         self._slack_client = SlackClient()
+
         self.slack_secrets_store_path = os.path.abspath('chatgpt_slack_lib/app_management/authentication/secret_vault')
 
         self.set_config_tokens_via_secret_file()
@@ -63,6 +67,7 @@ class SlackAuth:
         return self._slack_client.get_slack_config_token_pair(self._slack_config_refresh_token)
 
     def set_config_tokens(self, config_token_data):
+        self._slack_config_token = config_token_data['token']
         self._slack_config_token_expiry_time = config_token_data['exp']
         self._slack_config_token_created_time = config_token_data['iat']
         self._slack_config_refresh_token = config_token_data['refresh_token']
