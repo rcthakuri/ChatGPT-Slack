@@ -51,13 +51,11 @@ class SlackAuth:
         except Exception as e:
             logging.warning(e)
             config_token_data = self.get_slack_config_token_pairs()
-            'token' in config_token_data.keys() and self.set_config_tokens(config_token_data) and print('ok')
+            'token' in config_token_data.keys() and self.set_config_tokens(config_token_data)
         finally:
             if not self._slack_config_token or not self._slack_config_refresh_token:
                 logging.warning('Please seed the config refresh token to .env')
                 exit(-1)
-
-            print(self._slack_config_refresh_token, self._slack_config_token)
 
     def get_app_id(self):
         return self._app_id
