@@ -3,7 +3,7 @@
 
 # ChatGPT-Slack
 
-This project integrates `ChatGPT`, a powerful language processing AI, into Slack to provide instant answers to user questions. This chatbot, is hosted on in your local server and tunnel it via `NgRok` it leverages ChatGPT's natural language understanding capabilities to deliver accurate responses in real-time. With this integration, users can easily access a wealth of knowledge and information directly through their Slack workspace.
+This project integrates `ChatGPT`, a powerful language processing AI, into Slack to provide instant answers to user questions. This chatbot, can be hosted on your local server and tunnel it via `NgRok`. It leverages ChatGPT's natural language understanding capabilities to deliver accurate responses in real-time. With this integration, users can easily access a wealth of knowledge and information directly through their Slack workspace.
 Give it a try and see how ChatGPT can enhance your team's productivity!
 
 
@@ -45,30 +45,27 @@ Give it a try and see how ChatGPT can enhance your team's productivity!
 
 #### Create `.env` for your app
 ````
-# SLACK  KEY
+# SLACK KEY
 
 SLACK_BOT_TOKEN=
 PORT_FOR_SLACK_APP=
 SLACK_SIGNING_SECRET=
- 
+
 # SLACK MANIFEST KEY
 
 SLACK_APP_ID=
-SLACK_API_HOST=
-SLACK_CONFIG_BEAR_TOKEN=
-SLACK_MANIFEST_EXPORT_API=
-SLACK_MANIFEST_UPDATE_API=
- 
-# OPEN KEY
+SLACK_CONFIG_REFRESH_TOKEN=
+
+# OPEN AI KEY
 
 OPENAI_API_KEY=
 OPENAI_MODEL_ENGINE=
- 
-# NGROK KEY # 
+
+# NGROK KEY
 
 NGROK_PORT=
-NGROK_REQUEST_TYPE=
 NGROK_AUTH_TOKEN=
+NGROK_REQUEST_TYPE=
 ````
 ### Start the server
 
