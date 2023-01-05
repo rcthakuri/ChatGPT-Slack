@@ -33,9 +33,14 @@ class TunnelNg:
         self.callback_on_tunnel_change(self.default_tunnel)
 
     def stop_tunnel(self):
-        self.tunnel_runner.stop_it()
-        self.tunnel_process_runner.stop_it()
+        if self.tunnel_runner:
+            self.tunnel_runner.stop_it()
+        if self.tunnel_process_runner:
+            self.tunnel_process_runner.stop_it()
         ngrok.kill()
+
+        self.tunnel_runner = None
+        self.tunnel_process_runner = None
 
 
     def ngrok_process(self):
