@@ -92,6 +92,7 @@ Please adhere to this project's `code of conduct`.
 
 
 ## Acknowledgements
+ - [Ngrok](https://ngrok.com/)
  - [OpenAI API](https://openai.com/api/)
  - [Building an app with Bolt for Python](https://api.slack.com/start/building/bolt-python)
 
