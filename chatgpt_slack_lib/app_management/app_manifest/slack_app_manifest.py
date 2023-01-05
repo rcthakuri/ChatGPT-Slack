@@ -19,7 +19,7 @@ class SlackAppManifest(SlackAuth):
         return manifest
 
     def set_app_manifest(self, manifest):
-        response = self.slack_client.set_slack_app_manifest(self._slack_app_token, self._app_id, manifest)
+        response = self.slack_client.set_slack_app_manifest(self._slack_config_token, self._app_id, manifest)
         return response
 
     def update_request_url(self, req_url):
