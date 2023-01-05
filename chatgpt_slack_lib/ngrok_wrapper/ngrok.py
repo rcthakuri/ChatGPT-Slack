@@ -33,14 +33,10 @@ class TunnelNg:
         self.callback_on_tunnel_change(self.default_tunnel)
 
     def stop_tunnel(self):
-        ngrok.kill()
         self.tunnel_runner.stop_it()
         self.tunnel_process_runner.stop_it()
-        self.tunnel_runner.join()
-        self.tunnel_process_runner.join()
+        ngrok.kill()
 
-        self.tunnel_runner = None
-        self.tunnel_process_runner = None
 
     def ngrok_process(self):
         try:
@@ -56,8 +52,9 @@ class TunnelNg:
                     self.stop_tunnel()
                     self.start_tunnel()
             # TODO: Add possible exceptions and handle it
-            except:
-                continue
+            except KeyboardInterrupt:
+                self.stop_tunnel()
+                break
 
     @staticmethod
     def get_public_urls(ngrok_get_tunnel_callback) -> list:
