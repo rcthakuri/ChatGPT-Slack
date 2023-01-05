@@ -2,6 +2,8 @@ import os
 import time
 import pickle
 import atexit
+import logging
+from sys import exit
 from dotenv import load_dotenv
 from chatgpt_slack_lib.app_management.client.slack.slack_client import SlackClient
 
@@ -39,8 +41,23 @@ class SlackAuth:
 
         self.slack_secrets_store_path = os.path.abspath('chatgpt_slack_lib/app_management/authentication/secret_vault')
 
-        self.set_config_tokens_via_secret_file()
+        self.init_config_tokens()
         atexit.register(self.slack_auth_cleanup)
+
+    def init_config_tokens(self):
+        try:
+            config_token_data = self.get_config_tokens_via_secret_file()
+            'token' in config_token_data.keys() and self.set_config_tokens(config_token_data)
+        except Exception as e:
+            logging.warning(e)
+            config_token_data = self.get_slack_config_token_pairs()
+            'token' in config_token_data.keys() and self.set_config_tokens(config_token_data) and print('ok')
+        finally:
+            if not self._slack_config_token or not self._slack_config_refresh_token:
+                logging.warning('Please seed the config refresh token to .env')
+                exit(-1)
+
+            print(self._slack_config_refresh_token, self._slack_config_token)
 
     def get_app_id(self):
         return self._app_id
@@ -55,7 +72,7 @@ class SlackAuth:
         return self._slack_signing_secret
 
     def get_slack_config_refresh_token(self):
-        return self._config_bear_refresh_token
+        return self._slack_config_refresh_token
 
     def get_slack_credential(self):
         return {
@@ -72,13 +89,9 @@ class SlackAuth:
         self._slack_config_token_created_time = config_token_data['iat']
         self._slack_config_refresh_token = config_token_data['refresh_token']
 
-    def set_config_tokens_via_secret_file(self):
-        try:
-            with open(self.slack_secrets_store_path + '/slack_secret.pickle', 'rb') as slack_secrets:
-                config_token_data = pickle.load(slack_secrets)
-                self.set_config_tokens(config_token_data)
-        except FileNotFoundError:
-            pass
+    def get_config_tokens_via_secret_file(self):
+        with open(self.slack_secrets_store_path + '/slack_secret.pickle', 'rb') as slack_secrets:
+            return pickle.load(slack_secrets)
 
     def check_config_token_validity(self):
         if (self._slack_config_token_expiry_time - time.time()) / 60 / 60 \
